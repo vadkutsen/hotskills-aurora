@@ -1,0 +1,19 @@
+# vscode
+.vscode
+node_modules
+.env
+coverage
+coverage.json
+typechain
+.DS_Store
+dist
+dist-ssr
+*.local
+
+#Hardhat files
+cache
+artifacts
+package-lock.js
+yarn.lock
+.netlify
+yarn.lock

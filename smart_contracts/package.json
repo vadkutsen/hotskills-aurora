@@ -1,0 +1,30 @@
+{
+  "name": "mepay",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "author": "Vadym Kutsenko <vadkutsen@gmail.com>",
+  "scripts": {
+    "clean": "rm -rf ./artifacts/ ./cache/",
+    "compile": "npx hardhat compile",
+    "test": "",
+    "deploy:aurora": "yarn clean && yarn compile && npx hardhat run scripts/deploy.js --network testnet_aurora",
+    "deploy:ropsten": "yarn clean && yarn compile && npx hardhat run scripts/deploy.js --network ropsten"
+  },
+  "devDependencies": {
+    "@nomiclabs/hardhat-ethers": "^2.0.3",
+    "@nomiclabs/hardhat-waffle": "^2.0.1",
+    "@nomiclabs/hardhat-web3": "^2.0.0",
+    "@openzeppelin/contracts": "^4.7.1",
+    "chai": "^4.3.4",
+    "ethereum-waffle": "^3.4.0",
+    "ethers": "^5.5.2",
+    "hardhat": "^2.12.2",
+    "web3": "^1.3.6"
+  },
+  "dependencies": {
+    "@openzeppelin/contracts": "^4.7.1",
+    "dotenv": "^16.0.1",
+    "solidity-coverage": "^0.8.2"
+  }
+}
