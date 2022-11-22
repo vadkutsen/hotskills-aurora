@@ -19,7 +19,7 @@ export const AuthProvider = ({ children }) => {
 
   const checkIfWalletIsConnected = () => {
     if (!ethereum) {
-      alert("Make sure you have MetaMask! -> https://metamask.io/");
+      alert("MetaMask is not installed. Please install it to use this app: https://metamask.io/download.html");
       return;
     }
 
@@ -42,7 +42,7 @@ export const AuthProvider = ({ children }) => {
   const connectWallet = () => {
     try {
       if (!ethereum) {
-        alert("Get MetaMask -> https://metamask.io/");
+        alert("MetaMask is not installed. Please install it to use this app: https://metamask.io/download.html");
         return;
       }
       // Fancy method to request access to account.

@@ -104,8 +104,9 @@ export const ServiceProvider = ({ children }) => {
         setIsLoading(true);
         const contract = createEthereumContract();
         const fetchedService = await contract.getService(id);
-        setService(formatService(fetchedService));
+        // setService(formatService(fetchedService));
         setIsLoading(false);
+        return fetchedService;
       } catch (error) {
         console.log(error);
         // alert(error.message);
@@ -256,25 +257,31 @@ export const ServiceProvider = ({ children }) => {
     }
   };
 
+  const calculateTotalAmount = (amount, feePercent) => {
+    if (feePercent && amount) {
+      const feeAmount = parseFloat((amount / 100) * feePercent);
+      return parseFloat(amount) + feeAmount;
+    }
+    return 0;
+  };
+
   const requestService = async (data) => {
     if (ethereum) {
       try {
         const { category, title, description, taskType, assignee, reward, fee } = data;
-        const feeAmount = (reward / 100) * fee;
-        const totalAmount = parseFloat(reward) + parseFloat(feeAmount);
         const taskToSend = [
           category,
           title,
           description,
           taskType,
-          ethers.utils.parseEther(reward),
+          ethers.utils.parseEther(reward.toString()),
           assignee,
         ];
         console.log(taskToSend);
         setIsLoading(true);
         const contract = createEthereumContract();
         const transaction = await contract.addTask(taskToSend, {
-          value: ethers.utils.parseEther(totalAmount.toString())
+          value: ethers.utils.parseEther(calculateTotalAmount(reward, fee).toString())
         });
         console.log(`Success - ${transaction}`);
         setIsLoading(false);
@@ -365,7 +372,9 @@ export const ServiceProvider = ({ children }) => {
         handleChange,
         formData,
         onUploadHandler,
-        ipfsUrl
+        ipfsUrl,
+        calculateTotalAmount,
+        formatService
       }}
     >
       {children}

@@ -4,13 +4,8 @@ import { ServiceContext } from "../../context/ServiceContext";
 import { networks } from "../../utils/networks";
 
 const RequestService = () => {
-  const { service, requestService } = useContext(ServiceContext);
+  const { service, requestService, calculateTotalAmount } = useContext(ServiceContext);
   const { fee } = useContext(PlatformContext);
-
-  const totalAmount = (
-    parseFloat(service.price) +
-      parseFloat((service.price / 100) * fee) || 0
-  );
 
   const [formData, setformData] = useState({
     category: service.category,
@@ -45,7 +40,7 @@ const RequestService = () => {
         />
         <div className="h-[1px] w-full bg-gray-400 my-2" />
         <p className="text-white text-center">
-          Total amount to pay (including {fee}% portal fee): {totalAmount} {networks.testnet.nativeCurrency.symbol}
+          Total amount to pay (including {fee}% portal fee): {calculateTotalAmount(formData.reward, fee)} {networks.testnet.nativeCurrency.symbol}
         </p>
         <button
           type="button"

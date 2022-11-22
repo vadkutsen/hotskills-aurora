@@ -29,10 +29,11 @@ const createEthereumContract = () => {
 
 export default function Service() {
   const params = useParams();
-  const { currentAccount } = useContext(AuthContext);
-  const { service, getService } = useContext(ServiceContext);
+  const { currentAccount, networkId } = useContext(AuthContext);
+  const { getService, formatService } = useContext(ServiceContext);
   const { isLoading } = useContext(PlatformContext);
   const serviceId = params.id;
+  const [service, setService] = useState([]);
   const [rating, setRating] = useState(0);
   const [profile, setProfile] = useState(null);
 
@@ -67,10 +68,14 @@ export default function Service() {
   };
 
   useEffect(() => {
-    getService(serviceId);
-    getRating(service.author);
-    getProfile(service.author);
+    getService(serviceId).then((s) => {
+      setService(formatService(s));
+      getRating(s.author);
+      getProfile(s.author);
+    });
   }, []);
+  console.log("service use effect, service: ", service);
+  console.log("getOPrifile use effect, profile: ", profile);
   return (
     <div className="min-h-screen text-white">
       <div className="container mx-auto flex flex-col self-center items-center white-glassmorphism p-3">
@@ -89,7 +94,9 @@ export default function Service() {
             </div>
             <div className="flex flex-row justify-between w-full">
               <p className="mt-2 text-4xl text-left">{service.title}</p>
-              <p className="mt-2 text-3xl text-right">{service.price} {networks.testnet.nativeCurrency.symbol}</p>
+              <p className="mt-2 text-3xl text-right">
+                {service.price} {networks.testnet.nativeCurrency.symbol}
+              </p>
             </div>
             <p className="mt-1 text-2xl">{service.description}</p>
             <p className="mt-1 text-xl">
@@ -98,11 +105,15 @@ export default function Service() {
             <div className="pt-4 flex flex-row gap-2 items-center italic">
               <div className="flex flex-row items-center">
                 {profile && profile.avatar ? (
-                  <img alt="Avatar" className="w-[2.5rem] mr-1 rounded-full border" src={profile.avatar} />
+                  <img
+                    alt="Avatar"
+                    className="w-[2.5rem] mr-1 rounded-full border"
+                    src={profile.avatar}
+                  />
                 ) : (
                   <AutoAvatar userId={service.author} size={36} />
                 )}
-                {profile ? profile.username : shortenAddress(service.author)}
+                {profile && profile.username ? <span>{profile.username} ({shortenAddress(service.author)}) </span> : shortenAddress(service.author)}
               </div>
               <div className="flex flex-row justify-center items-center">
                 <FaStar color="#ffc107" />
