@@ -1,7 +1,7 @@
-# HotSkills (formerly MeDo) - Blockchain Freelance Platform
-HotSkills is a prototype of a freelancing platform which stores it's data on blockchain.
+# MePay - Blockchain Freelance Platform
+MePay is a prototype of a freelancing platform which stores it's data on blockchain.
 
-Application deployed at [https://mepay.netlify.app/](https://mepay.netlify.app/), currently running on NEAR via Aurora.
+Application deployed at [https://mepay-aurora.netlify.app/](https://mepay-aurora.netlify.app/), currently running on NEAR via Aurora.
 Smart Contract deployed to Aurora testnet at address 0xaD53f2EB80b0205675F445F4F524d3dF69f79eb9.
 
 ## Introduction
