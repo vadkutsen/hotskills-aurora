@@ -13,9 +13,9 @@ const MyTasks = () => {
   }, []);
 
   function checkTask(task) {
-    return task.author === currentAccount
-    || task.assignee === currentAccount
-    || task.candidates.includes(currentAccount);
+    return task && (task.author.toLowerCase() === currentAccount.toLowerCase()
+    || task.assignee.toLowerCase() === currentAccount.toLowerCase()
+    || task.candidates.includes(currentAccount.toLowerCase()));
   }
   return (
     <>

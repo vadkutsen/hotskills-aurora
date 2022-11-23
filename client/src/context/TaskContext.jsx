@@ -72,7 +72,7 @@ export const TaskProvider = ({ children }) => {
       ).toLocaleDateString(),
       author: t.author,
       candidates:
-        t.candidates,
+        t.candidates.map((c) => c.toLowerCase()),
       assignee:
         t.assignee === address0
           ? "Unassigned"
@@ -156,8 +156,9 @@ export const TaskProvider = ({ children }) => {
         setIsLoading(true);
         const contract = createEthereumContract();
         const fetchedTask = await contract.getTask(id);
-        setTask(formatTask(fetchedTask));
+        // setTask(formatTask(fetchedTask));
         setIsLoading(false);
+        return fetchedTask;
       } catch (error) {
         console.log(error);
         // alert(error.message);
@@ -442,6 +443,7 @@ export const TaskProvider = ({ children }) => {
         task,
         getAllTasks,
         getTask,
+        setTask,
         addTask,
         applyForTask,
         submitResult,
@@ -456,7 +458,8 @@ export const TaskProvider = ({ children }) => {
         ipfsUrl,
         composeCandidateProfiles,
         composeAuthorProfile,
-        calculateTotalAmount
+        calculateTotalAmount,
+        formatTask
       }}
     >
       {children}

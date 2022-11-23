@@ -7,8 +7,8 @@ import RequestService from "./RequestService";
 const ActionControls = (params) => {
   const { currentAccount } = useContext(AuthContext);
   const { service } = params;
-  if (service.author === currentAccount) {
-    return <AuthorActions />;
+  if (service.author && service.author.toLowerCase() === currentAccount.toLowerCase()) {
+    return <AuthorActions service={service} />;
   }
   if (service.status === ServiceStatuses[0]) {
     return <RequestService />;

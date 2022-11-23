@@ -74,8 +74,7 @@ export default function Service() {
       getProfile(s.author);
     });
   }, []);
-  console.log("service use effect, service: ", service);
-  console.log("getOPrifile use effect, profile: ", profile);
+
   return (
     <div className="min-h-screen text-white">
       <div className="container mx-auto flex flex-col self-center items-center white-glassmorphism p-3">

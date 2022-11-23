@@ -13,7 +13,7 @@ const MyServices = () => {
   }, []);
 
   function checkService(service) {
-    return service.author === currentAccount;
+    return service && service.author.toLowerCase() === currentAccount.toLowerCase();
   }
   return (
     <>

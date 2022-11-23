@@ -32,7 +32,7 @@ const ServiceCard = ({
   category,
 }) => {
   const [profile, setProfile] = useState(null);
-  const { currentAccount, networkId } = useContext(AuthContext);
+  // const { currentAccount, networkId } = useContext(AuthContext);
 
   const getProfile = async (address) => {
     if (ethereum && address) {
@@ -66,7 +66,7 @@ const ServiceCard = ({
             ) : (
               <AutoAvatar userId={author} size={36} />
             )}
-            {profile && profile.username ? profile.username : shortenAddress(author)}
+            {profile && profile.username ? <span>{profile.username} ({shortenAddress(author)})</span> : shortenAddress(author)}
           </div>
           {createdAt}
           <div className="flex flex-row gap-2 items-center">

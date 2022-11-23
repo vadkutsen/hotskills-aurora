@@ -13,17 +13,15 @@ import { shortenAddress } from "../utils/shortenAddress";
 export default function Task() {
   const params = useParams();
   const { isLoading } = useContext(PlatformContext);
-  const { task, getTask, composeAuthorProfile } = useContext(TaskContext);
+  const { task, formatTask, getTask, setTask, composeAuthorProfile } = useContext(TaskContext);
   const taskId = params.id;
   const [authorProfile, setAuthorProfile] = useState(null);
 
   useEffect(() => {
-    const fetchData = async () => {
-      await getTask(taskId);
-      const a = await composeAuthorProfile(task.author);
-      setAuthorProfile(a);
-    };
-    fetchData().catch(console.error);
+    getTask(taskId).then((t) => {
+      setTask(formatTask(t));
+    });
+    // composeAuthorProfile(task.author).then((a) => setAuthorProfile(a));
     return () => {
       // this now gets called when the component unmounts
       // setAuthorProfile(null);
