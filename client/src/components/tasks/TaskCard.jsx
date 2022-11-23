@@ -2,6 +2,7 @@ import { Link } from "react-router-dom";
 import AutoAvatar from "../AutoAvatar";
 import { shortenAddress } from "../../utils/shortenAddress";
 import { TaskTypes } from "../../utils/constants";
+import { networks } from "../../utils/networks";
 
 const TaskCard = ({
   id,
@@ -39,7 +40,7 @@ const TaskCard = ({
           {createdAt}
         </div>
         {/* } */}
-        <p className="text-2xl self-end">{reward} TRX</p>
+        <p className="text-2xl self-end">{reward} {networks.testnet.nativeCurrency.symbol}</p>
         {/* <p className="mt-1 italic text-white text-sm md:w-9/12">Completed at: {completedAt}</p> */}
       </div>
     </div>

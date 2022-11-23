@@ -11,7 +11,7 @@ const ActionControls = (params) => {
     return <AuthorActions service={service} />;
   }
   if (service.status === ServiceStatuses[0]) {
-    return <RequestService />;
+    return <RequestService service={service} />;
   }
   return null;
 };

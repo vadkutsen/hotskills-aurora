@@ -1,10 +1,11 @@
-import { useContext, useState } from "react";
+import { useContext, useState, useEffect} from "react";
 import { PlatformContext } from "../../context/PlatformContext";
 import { ServiceContext } from "../../context/ServiceContext";
 import { networks } from "../../utils/networks";
 
-const RequestService = () => {
-  const { service, requestService, calculateTotalAmount } = useContext(ServiceContext);
+const RequestService = (params) => {
+  const { service } = params;
+  const { requestService, calculateTotalAmount } = useContext(ServiceContext);
   const { fee } = useContext(PlatformContext);
 
   const [formData, setformData] = useState({

@@ -9,6 +9,7 @@ import { TaskStatuses, TaskTypes } from "../utils/constants";
 
 import AutoAvatar from "../components/AutoAvatar";
 import { shortenAddress } from "../utils/shortenAddress";
+import { networks } from "../utils/networks";
 
 export default function Task() {
   const params = useParams();
@@ -109,7 +110,7 @@ export default function Task() {
           )}
         </div>
         <div>
-          <p className="mt-2 text-2xl">{task.reward} TRX</p>
+          <p className="mt-2 text-2xl">{task.reward} {networks.testnet.nativeCurrency.symbol}</p>
         </div>
         <ToastContainer />
       </div>
