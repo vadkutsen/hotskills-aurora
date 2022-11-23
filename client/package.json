@@ -1,8 +1,9 @@
 {
-  "name": "medo",
-  "version": "0.0.0",
+  "name": "mepay-aurora",
+  "version": "2.0.0",
   "license": "MIT",
-  "homepage": "https://vadkutsen.github.io/medo-tron",
+  "homepage": "https://vadkutsen.github.io/mepay-aurora",
+  "author": "Vadym Kutsenko <vadkutsen@gmail.com>",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
