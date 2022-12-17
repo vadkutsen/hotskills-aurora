@@ -98,7 +98,6 @@ export const AuthProvider = ({ children }) => {
 
   useEffect(() => {
     checkIfWalletIsConnected();
-    console.log("auth context use effect");
   }, []);
 
   return (

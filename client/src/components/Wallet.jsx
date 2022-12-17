@@ -20,7 +20,12 @@ export default function Wallet() {
 
   const handleDisconnect = async () => {
     setCurrentAccount(null);
-    await ethereum.request({ method: "disconnect" });
+    try {
+      await ethereum.request({ method: "disconnect" });
+    } catch (error) {
+      console.log(error);
+    }
+    window.location.replace("/");
   };
 
   return (

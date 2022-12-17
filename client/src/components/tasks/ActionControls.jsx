@@ -12,7 +12,7 @@ const ActionButton = (params) => {
 
   const isCandidate = () => {
     for (let i = 0; i < task.candidates.length; i += 1) {
-      if (task.candidadtes && task.candidates[i].toLowerCase() === currentAccount.toLowerCase()) {
+      if (task.candidates && task.candidates[i].toLowerCase() === currentAccount.toLowerCase()) {
         return true;
       }
     }
@@ -22,16 +22,16 @@ const ActionButton = (params) => {
   let button;
 
   if (task.author && task.author.toLowerCase() === currentAccount.toLowerCase()) {
-    button = <AuthorActions />;
+    button = <AuthorActions task={task} />;
   } else if (
     task.assignee && task.assignee !== "Unassigned" &&
     task.assignee.toLowerCase() !== currentAccount.toLowerCase()
   ) {
     button = <p />;
   } else if (task.assignee && task.assignee.toLowerCase() === currentAccount.toLowerCase()) {
-    button = <AssigneeActions />;
+    button = <AssigneeActions task={task} />;
   } else if (task.candidates && isCandidate()) {
-    button = <CandidateActions />;
+    button = <CandidateActions task={task} />;
   } else {
     button = (
       <div>

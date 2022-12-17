@@ -8,7 +8,7 @@ const IpfsForm = () => {
     <div>
       <p className="mt-5 text-2xl text-white text-basetext-white">
         Upload file using IPFS or paste a link to your result on any other
-        hosting (preferably BTTC).
+        hosting.
       </p>
       <form onSubmit={onUploadHandler}>
         <input

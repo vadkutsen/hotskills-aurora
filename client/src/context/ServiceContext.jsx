@@ -302,7 +302,6 @@ export const ServiceProvider = ({ children }) => {
   useEffect(() => {
     if (networkId === networks.testnet.chainId) {
       getAllServices();
-      console.log("service context use effect");
     }
   }, [currentAccount, networkId]);
 

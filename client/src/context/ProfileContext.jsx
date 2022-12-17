@@ -120,7 +120,6 @@ export const ProfileProvider = ({ children }) => {
   useEffect(() => {
     if (networkId === networks.testnet.chainId) {
       getProfile(currentAccount);
-      console.log("profile context use effect");
     }
   }, [currentAccount, networkId]);
 

@@ -382,7 +382,6 @@ export const TaskProvider = ({ children }) => {
   useEffect(() => {
     if (networkId === networks.testnet.chainId) {
       getAllTasks();
-      console.log("task context use effect");
     }
   }, [currentAccount, networkId]);
 

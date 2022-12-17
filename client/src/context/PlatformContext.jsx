@@ -82,12 +82,8 @@ export const PlatformProvider = ({ children }) => {
       try {
         setIsLoading(true);
         const contract = createEthereumContract();
-        const transaction = await contract.rateUser(address, rating).send({
-          feeLimit: 1000_000_000,
-          callValue: 0,
-          shouldPollResponse: true,
-        });
-        console.log(`Success - ${transaction}`);
+        const transaction = await contract.rateUser(address, rating);
+        console.log(`Success - ${transaction.hash}`);
         setIsLoading(false);
         // window.location.reload();
         notify("Rating saved successfully.");
@@ -123,13 +119,8 @@ export const PlatformProvider = ({ children }) => {
       getPlatformFee();
       getRating(currentAccount);
       getBalance();
-      console.log("platform context use effect");
     }
   }, [currentAccount, networkId]);
-
-  // useEffect(() => {
-  //   getRating(currentAccount);
-  // }, [currentAccount]);
 
   // Event listeners
 

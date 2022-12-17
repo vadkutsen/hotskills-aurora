@@ -106,7 +106,7 @@ export default function Task() {
           {isLoading ? (
             <Loader />
           ) : (
-            task.status !== TaskStatuses[4] && <ActionControls task={task} />
+            <ActionControls task={task} />
           )}
         </div>
         <div>
