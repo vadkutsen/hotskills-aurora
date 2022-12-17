@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { HiMenuAlt4 } from "react-icons/hi";
 import { AiOutlineClose } from "react-icons/ai";
 import { AuthContext } from "../context/AuthContext";
-// import logo1 from "../../images/logo1.png";
+import logo1 from "../../images/logo1.png";
 import Wallet from "./Wallet";
 import ConnectWalletButton from "./ConnectWalletButton";
 import Notifications from "./Notifications";
@@ -44,8 +44,7 @@ const Navbar = () => {
       <div className="md:flex-[0.9] flex-initial justify-center items-center">
         <Link to="/">
           <p className="text-white text-2xl cursor-pointer font-bold">
-            {/* <img alt="Brand logo" className="h-7 self-center" src={logo1} /> */}
-            <span className="text-[#d946ef]">Me</span>Pay
+            <img alt="Brand logo" className="h-7 self-center" src={logo1} />
           </p>
         </Link>
       </div>

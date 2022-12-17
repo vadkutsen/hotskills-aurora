@@ -1,8 +1,8 @@
 {
-  "name": "mepay-aurora",
+  "name": "hotskils-aurora",
   "version": "2.0.0",
   "license": "MIT",
-  "homepage": "https://vadkutsen.github.io/mepay-aurora",
+  "homepage": "https://hotskills.net",
   "author": "Vadym Kutsenko <vadkutsen@gmail.com>",
   "scripts": {
     "dev": "vite",
