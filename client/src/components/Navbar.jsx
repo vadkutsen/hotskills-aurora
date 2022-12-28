@@ -4,7 +4,7 @@ import { HiMenuAlt4 } from "react-icons/hi";
 import { AiOutlineClose } from "react-icons/ai";
 import { AuthContext } from "../context/AuthContext";
 import logo1 from "../../images/logo1.png";
-import logo2 from "../../images/aurora-logo.png";
+import logo2 from "../../images/auroralogo.png";
 import Wallet from "./Wallet";
 import ConnectWalletButton from "./ConnectWalletButton";
 import Notifications from "./Notifications";
@@ -15,24 +15,8 @@ const NavBarItem = ({ title, classprops }) => (
 );
 
 const Navbar = () => {
-  const { currentAccount, networkId, switchNetwork } = useContext(AuthContext);
+  const { currentAccount, networkId } = useContext(AuthContext);
   const [toggleMenu, setToggleMenu] = useState(false);
-  const renderNotConnectedContainer = () => {
-    if (networkId !== networks.testnet.chainId) {
-      return (
-        <div className="flex flex-col w-full text-white justify-center items-center">
-          <button
-            type="button"
-            onClick={switchNetwork}
-            className="flex flex-row justify-center items-center gap-1 bg-[#2952e3] pt-1 pb-1 pl-2 pr-3 rounded-full cursor-pointer hover:bg-[#2546bd]"
-          >
-            <p className="text-white text-base font-semibold">Switch Network</p>
-          </button>
-        </div>
-      );
-    }
-    return <ConnectWalletButton />;
-  };
 
   const renderAccountInfo = () => (
     <div className="flex flex-row">
@@ -71,7 +55,7 @@ const Navbar = () => {
           <li />
         )}
         <li>
-          {!currentAccount && renderNotConnectedContainer()}
+          {!currentAccount && <ConnectWalletButton />}
           {currentAccount && renderAccountInfo()}
         </li>
       </ul>
@@ -118,7 +102,7 @@ const Navbar = () => {
               <li />
             )}
             <li>
-              {!currentAccount && renderNotConnectedContainer()}
+              {!currentAccount && <ConnectWalletButton />}
               {currentAccount && renderAccountInfo()}
             </li>
           </ul>
