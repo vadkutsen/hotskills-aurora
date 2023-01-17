@@ -2,7 +2,13 @@ import { createContext, useEffect, useState, useContext } from "react";
 import { ethers } from "ethers";
 import { Web3Storage } from "web3.storage";
 import contractABI from "../utils/contractABI.json";
-import { TaskTypes, address0, TaskStatuses, Categories, contractAddress } from "../utils/constants";
+import {
+  TaskTypes,
+  address0,
+  TaskStatuses,
+  Categories,
+  contractAddress,
+} from "../utils/constants";
 import { PlatformContext } from "./PlatformContext";
 import { AuthContext } from "./AuthContext";
 import { networks } from "../utils/networks";
@@ -11,14 +17,16 @@ export const TaskContext = createContext();
 
 const { ethereum } = window;
 const createEthereumContract = () => {
-  const provider = new ethers.providers.Web3Provider(ethereum);
-  const signer = provider.getSigner();
-  const platformContract = new ethers.Contract(
-    contractAddress,
-    contractABI,
-    signer
-  );
-  return platformContract;
+  if (ethereum) {
+    const provider = new ethers.providers.Web3Provider(ethereum);
+    const signer = provider.getSigner();
+    const platformContract = new ethers.Contract(
+      contractAddress,
+      contractABI,
+      signer
+    );
+    return platformContract;
+  }
 };
 
 export const TaskProvider = ({ children }) => {
@@ -28,7 +36,7 @@ export const TaskProvider = ({ children }) => {
     description: "",
     taskType: 0,
     reward: 0,
-    assignee: address0
+    assignee: address0,
   });
 
   const [tasks, setTasks] = useState("");
@@ -38,7 +46,9 @@ export const TaskProvider = ({ children }) => {
   const [ipfsUrl, setIpfsUrl] = useState("");
 
   const onUploadHandler = async (event) => {
-    const client = new Web3Storage({ token: import.meta.env.VITE_WEB3_STORAGE_TOKEN });
+    const client = new Web3Storage({
+      token: import.meta.env.VITE_WEB3_STORAGE_TOKEN,
+    });
     event.preventDefault();
     const form = event.target;
     const { files } = form[0];
@@ -61,27 +71,19 @@ export const TaskProvider = ({ children }) => {
   };
 
   function formatTask(t) {
-    return ({
+    return {
       id: t.id.toNumber(),
       category: t.category,
       title: t.title,
       description: t.description,
       taskType: TaskTypes[t.taskType],
-      createdAt: new Date(
-        t.createdAt.toNumber() * 1000
-      ).toLocaleDateString(),
+      createdAt: new Date(t.createdAt.toNumber() * 1000).toLocaleDateString(),
       author: t.author,
-      candidates:
-        t.candidates.map((c) => c.toLowerCase()),
-      assignee:
-        t.assignee === address0
-          ? "Unassigned"
-          : t.assignee,
+      candidates: t.candidates.map((c) => c.toLowerCase()),
+      assignee: t.assignee === address0 ? "Unassigned" : t.assignee,
       completedAt:
         t.completedAt > 0
-          ? new Date(
-            t.completedAt.toNumber() * 1000
-          ).toLocaleDateString()
+          ? new Date(t.completedAt.toNumber() * 1000).toLocaleDateString()
           : "Not completed yet",
       reward: parseInt(t.reward, 10) / 10 ** 18,
       result: t.result,
@@ -90,7 +92,7 @@ export const TaskProvider = ({ children }) => {
         t.lastStatusChangeAt.toNumber() * 1000
       ).toLocaleDateString(),
       changeRequests: t.changeRequests,
-    });
+    };
   }
 
   const formatUser = async (address) => {
@@ -137,7 +139,7 @@ export const TaskProvider = ({ children }) => {
         const availableTasks = await contract.getAllTasks();
         const structuredTasks = availableTasks
           .filter((item) => item.title && item.title !== "")
-          .map((item) => (formatTask(item)));
+          .map((item) => formatTask(item));
         setTasks(structuredTasks);
         setIsLoading(false);
       } else {
@@ -180,7 +182,8 @@ export const TaskProvider = ({ children }) => {
   const addTask = async () => {
     if (ethereum) {
       try {
-        const { category, title, description, taskType, reward, assignee } = formData;
+        const { category, title, description, taskType, reward, assignee } =
+          formData;
         // const feeAmount = (ethers.utils.parseEther(reward) / 100) * fee;
         // const totalAmount = ethers.utils.formatEther(ethers.utils.parseEther(reward) + feeAmount);
         const taskToSend = [
@@ -189,12 +192,14 @@ export const TaskProvider = ({ children }) => {
           description,
           taskType,
           ethers.utils.parseEther(reward),
-          assignee
+          assignee,
         ];
         setIsLoading(true);
         const contract = createEthereumContract();
         const transaction = await contract.addTask(taskToSend, {
-          value: ethers.utils.parseEther(calculateTotalAmount(reward, fee).toString()),
+          value: ethers.utils.parseEther(
+            calculateTotalAmount(reward, fee).toString()
+          ),
         });
         console.log(`Success - ${transaction.hash}`);
         setIsLoading(false);
@@ -241,8 +246,10 @@ export const TaskProvider = ({ children }) => {
       try {
         setIsLoading(true);
         const contract = createEthereumContract();
-        const transaction = await contract
-          .submitResult(ethers.BigNumber.from(id), result);
+        const transaction = await contract.submitResult(
+          ethers.BigNumber.from(id),
+          result
+        );
         console.log(`Success - ${transaction}`);
         setIsLoading(false);
         await getAllTasks();
@@ -265,8 +272,9 @@ export const TaskProvider = ({ children }) => {
       try {
         setIsLoading(true);
         const contract = createEthereumContract();
-        const transaction = await contract
-          .deleteTask(ethers.BigNumber.from(id));
+        const transaction = await contract.deleteTask(
+          ethers.BigNumber.from(id)
+        );
         console.log(`Success - ${transaction}`);
         setIsLoading(false);
         await getAllTasks();
@@ -289,8 +297,10 @@ export const TaskProvider = ({ children }) => {
       try {
         setIsLoading(true);
         const contract = createEthereumContract();
-        const transaction = await contract
-          .assignTask(ethers.BigNumber.from(id), candidate);
+        const transaction = await contract.assignTask(
+          ethers.BigNumber.from(id),
+          candidate
+        );
         console.log(`Success - ${transaction}`);
         setIsLoading(false);
         await getAllTasks();
@@ -313,8 +323,9 @@ export const TaskProvider = ({ children }) => {
       try {
         setIsLoading(true);
         const contract = createEthereumContract();
-        const transaction = await contract
-          .unassignTask(ethers.BigNumber.from(id));
+        const transaction = await contract.unassignTask(
+          ethers.BigNumber.from(id)
+        );
         console.log(`Success - ${transaction}`);
         setIsLoading(false);
         await getAllTasks();
@@ -338,8 +349,10 @@ export const TaskProvider = ({ children }) => {
       try {
         setIsLoading(true);
         const contract = createEthereumContract();
-        const transaction = await contract
-          .requestChange(ethers.BigNumber.from(id), message);
+        const transaction = await contract.requestChange(
+          ethers.BigNumber.from(id),
+          message
+        );
         console.log(`Success - ${transaction}`);
         setIsLoading(false);
         await getAllTasks();
@@ -362,8 +375,10 @@ export const TaskProvider = ({ children }) => {
       if (ethereum) {
         setIsLoading(true);
         const contract = createEthereumContract();
-        const transaction = await contract
-          .completeTask(ethers.BigNumber.from(id), newRating);
+        const transaction = await contract.completeTask(
+          ethers.BigNumber.from(id),
+          newRating
+        );
         console.log(`Success - ${transaction}`);
         setIsLoading(false);
         await getAllTasks();
@@ -389,10 +404,7 @@ export const TaskProvider = ({ children }) => {
   useEffect(() => {
     const contract = createEthereumContract();
     const onNewTask = (t) => {
-      setTasks((prevState) => [
-        ...prevState,
-        formatTask(t)
-      ]);
+      setTasks((prevState) => [...prevState, formatTask(t)]);
     };
     if (ethereum) {
       contract.on("TaskAdded", onNewTask);
@@ -458,7 +470,7 @@ export const TaskProvider = ({ children }) => {
         composeCandidateProfiles,
         composeAuthorProfile,
         calculateTotalAmount,
-        formatTask
+        formatTask,
       }}
     >
       {children}

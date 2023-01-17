@@ -1,7 +1,11 @@
 import { createContext, useEffect, useState, useContext } from "react";
 import { Web3Storage } from "web3.storage";
 import { ethers } from "ethers";
-import { ServiceStatuses, Categories, contractAddress } from "../utils/constants";
+import {
+  ServiceStatuses,
+  Categories,
+  contractAddress,
+} from "../utils/constants";
 import contractABI from "../utils/contractABI.json";
 import { PlatformContext } from "./PlatformContext";
 import { networks } from "../utils/networks";
@@ -11,14 +15,16 @@ export const ServiceContext = createContext();
 
 const { ethereum } = window;
 const createEthereumContract = () => {
-  const provider = new ethers.providers.Web3Provider(ethereum);
-  const signer = provider.getSigner();
-  const platformContract = new ethers.Contract(
-    contractAddress,
-    contractABI,
-    signer
-  );
-  return platformContract;
+  if (ethereum) {
+    const provider = new ethers.providers.Web3Provider(ethereum);
+    const signer = provider.getSigner();
+    const platformContract = new ethers.Contract(
+      contractAddress,
+      contractABI,
+      signer
+    );
+    return platformContract;
+  }
 };
 
 export const ServiceProvider = ({ children }) => {
@@ -28,7 +34,7 @@ export const ServiceProvider = ({ children }) => {
     title: "",
     description: "",
     price: 0,
-    deliveryTime: 0
+    deliveryTime: 0,
   });
   const [services, setServices] = useState([]);
   const [service, setService] = useState([]);
@@ -85,7 +91,9 @@ export const ServiceProvider = ({ children }) => {
         setIsLoading(true);
         const contract = createEthereumContract();
         const availableServices = await contract.getAllServices();
-        const structuredServices = availableServices.map((item) => formatService(item));
+        const structuredServices = availableServices.map((item) =>
+          formatService(item)
+        );
         setServices(structuredServices);
         setIsLoading(false);
       } catch (error) {
@@ -128,7 +136,7 @@ export const ServiceProvider = ({ children }) => {
           title,
           description,
           ethers.utils.parseEther(price),
-          deliveryTime
+          deliveryTime,
         ];
         setIsLoading(true);
         const contract = createEthereumContract();
@@ -160,7 +168,7 @@ export const ServiceProvider = ({ children }) => {
           title,
           description,
           ethers.utils.parseEther(price),
-          deliveryTime
+          deliveryTime,
         ];
         setIsLoading(true);
         const contract = createEthereumContract();
@@ -186,8 +194,9 @@ export const ServiceProvider = ({ children }) => {
       try {
         setIsLoading(true);
         const contract = createEthereumContract();
-        const transaction = await contract
-          .pauseService(ethers.BigNumber.from(id));
+        const transaction = await contract.pauseService(
+          ethers.BigNumber.from(id)
+        );
         console.log(`Success - ${transaction}`);
         setIsLoading(false);
         await getAllServices();
@@ -212,8 +221,9 @@ export const ServiceProvider = ({ children }) => {
       try {
         setIsLoading(true);
         const contract = createEthereumContract();
-        const transaction = await contract
-          .resumeService(ethers.BigNumber.from(id));
+        const transaction = await contract.resumeService(
+          ethers.BigNumber.from(id)
+        );
         console.log(`Success - ${transaction}`);
         setIsLoading(false);
         await getAllServices();
@@ -238,8 +248,9 @@ export const ServiceProvider = ({ children }) => {
       try {
         setIsLoading(true);
         const contract = createEthereumContract();
-        const transaction = await contract
-          .deleteService(ethers.BigNumber.from(id));
+        const transaction = await contract.deleteService(
+          ethers.BigNumber.from(id)
+        );
         console.log(`Success - ${transaction}`);
         setIsLoading(false);
         await getAllServices();
@@ -268,7 +279,15 @@ export const ServiceProvider = ({ children }) => {
   const requestService = async (data) => {
     if (ethereum) {
       try {
-        const { category, title, description, taskType, assignee, reward, fee } = data;
+        const {
+          category,
+          title,
+          description,
+          taskType,
+          assignee,
+          reward,
+          fee,
+        } = data;
         const taskToSend = [
           category,
           title,
@@ -281,7 +300,9 @@ export const ServiceProvider = ({ children }) => {
         setIsLoading(true);
         const contract = createEthereumContract();
         const transaction = await contract.addTask(taskToSend, {
-          value: ethers.utils.parseEther(calculateTotalAmount(reward, fee).toString())
+          value: ethers.utils.parseEther(
+            calculateTotalAmount(reward, fee).toString()
+          ),
         });
         console.log(`Success - ${transaction}`);
         setIsLoading(false);
@@ -310,10 +331,7 @@ export const ServiceProvider = ({ children }) => {
   useEffect(() => {
     const contract = createEthereumContract();
     const onNewService = (s) => {
-      setServices((prevState) => [
-        ...prevState,
-        formatService(s)
-      ]);
+      setServices((prevState) => [...prevState, formatService(s)]);
     };
     if (ethereum) {
       contract.on("ServiceAdded", onNewService);
@@ -373,7 +391,7 @@ export const ServiceProvider = ({ children }) => {
         onUploadHandler,
         ipfsUrl,
         calculateTotalAmount,
-        formatService
+        formatService,
       }}
     >
       {children}
